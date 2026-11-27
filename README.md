@@ -233,7 +233,7 @@ A project of the builder is known by DDEV's file on DDEV and by its claim on ano
 | `admin` | `admin@example.com` | The library's first admin, through admin-sign-up (which only an empty library takes) |
 | `user` | `user@example.com` | `--add-users`, or `cmd-tools-add-users.sh <name> immich`: through the admin API, as the first admin |
 
-Both have the workspace's password and are made past Immich's first-run wizard.
+Both have the workspace's password and are made past Immich's first-run wizard. Immich keeps two flags for it: each account's own, and the library's own setup, which only an admin meets (`POST /api/system-metadata/admin-onboarding`). The builder and `--add-users` set both, so the admin signs in to its timeline, not to `/auth/onboarding`.
 
 `cmd-tools-cancel-users.sh <name> immich` keeps `user` from signing in: it gets a password no one knows, and its photos and albums stay. `--add-users` gives it its password again. The first admin is never touched.
 

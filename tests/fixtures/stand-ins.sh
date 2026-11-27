@@ -1,7 +1,7 @@
 # Stand-ins for the commands the Immich plugin's functions run, for its tests: ddev (and what it runs in the library's
 # containers: curl to the server, pg_dump, psql), docker, podman and the core's helpers, each call written to $LOG.
 # Nothing here reaches a container or the network.
-#   FAIL          dump | short | restore | swap | signup: that step fails (short: a dump cut before its end)
+#   FAIL          dump | short | restore | swap | signup | adminonboarding: that step fails (short: a dump cut before its end)
 #   USER_THERE    yes: the library has the user already
 #   SIGNUP        400: the library has its admin already
 
@@ -16,13 +16,14 @@ immich_answer() {
   local method="$1" path="$2" body="$3" ;
   case "${method} ${path}" in
     "POST /api/auth/admin-sign-up") [ "${FAIL:-}" = signup ] && { printf '500\n{"message":"down"}\n' ; return ; } ; printf '%s\n{}\n' "${SIGNUP:-201}" ;;
-    "POST /api/auth/login") printf '201\n{"accessToken":"t0k","userEmail":"x"}\n' ;;
+    "POST /api/auth/login") local who ; who="$(printf '%s' "${body}" | python3 -c 'import json, sys; print(json.load(sys.stdin)["email"])')" ; printf '201\n{"accessToken":"tok-%s","userEmail":"%s"}\n' "${who}" "${who}" ;;
     "GET /api/admin/users") if [ "${USER_THERE:-}" = yes ] ; then printf '200\n[{"id":"u-1","email":"user@example.com"},{"id":"a-1","email":"admin@example.com"}]\n' ; else printf '200\n[{"id":"a-1","email":"admin@example.com"}]\n' ; fi ;;
     "POST /api/admin/users") printf '201\n{"id":"u-1"}\n' ;;
     "PUT /api/admin/users/u-1") printf '200\n{}\n' ;;
     "PUT /api/users/me/onboarding") printf '200\n{"isOnboarded":true}\n' ;;
     "GET /api/system-config") printf '200\n{"newVersionCheck":{"enabled":true},"map":{"enabled":true},"other":1}\n' ;;
     "PUT /api/system-config") echo "system-config ${body}" >> "${LOG}" ; printf '200\n{}\n' ;;
+    "POST /api/system-metadata/admin-onboarding") [ "${FAIL:-}" = adminonboarding ] && { printf '403\n{"message":"Forbidden"}\n' ; return ; } ; printf '204\n' ;;
     *) printf '404\n{"message":"not found"}\n' ;;
   esac
 }

@@ -213,6 +213,15 @@ function immich_token() {
 
 # The library's own settings a test library starts with: the version check off (no call out, no "new version" notice
 # under a test) unless the plugin's settings keep it; the map as the plugin's settings say (Immich's default: on).
+# The admin's first sign-in meets the server's own first-run setup (its theme, privacy, storage template) until the
+# server is marked set up: a flag of its own (system metadata admin-onboarding, the isOnboarded of /api/server/config),
+# beside each account's. Marked done by the admin, after the library's settings.
+function immich_admin_onboarded() {
+  local token="$1" ;
+  [ "$(echo '{"isOnboarded":true}' | immich_api POST /api/system-metadata/admin-onboarding "${token}" | sed -n 1p)" = '204' ] || { echo "The library's own first-run setup could not be marked done." >&2 ; return 1 ; } ;
+  echo "  the library's own first-run setup marked done: the admin signs in to the photos" ;
+}
+
 function immich_system_settings() {
   local token="$1" check map config ;
   check="$(immich_setting version_check off)" ; map="$(immich_setting map on)" ;
@@ -265,13 +274,15 @@ function add_immich_users() {
       [ "$(echo "${answer}" | head -1)" = '201' ] && echo "  made." || { echo "  not made: $(echo "${answer}" | tail -n +2 | head -c 300)" ; status=1 ; } ;
     fi
   done
+  local onboarded=yes ;
   for user in "${users[@]}" ; do
     user_mail="user_${user}_mail"; user_password="user_${user}_password";
-    local t ; t="$(immich_token "${!user_mail}" "${!user_password}")" || { status=1 ; continue ; } ;
-    [ "$(echo '{"isOnboarded":true}' | immich_api PUT /api/users/me/onboarding "${t}" | sed -n 1p)" = '200' ] || { echo "  ${!user_mail}: not past the first-run wizard." ; status=1 ; } ;
+    local t ; t="$(immich_token "${!user_mail}" "${!user_password}")" || { status=1 ; onboarded=no ; continue ; } ;
+    [ "$(echo '{"isOnboarded":true}' | immich_api PUT /api/users/me/onboarding "${t}" | sed -n 1p)" = '200' ] || { echo "  ${!user_mail}: not past the first-run wizard." ; status=1 ; onboarded=no ; } ;
   done
-  echo "  Both accounts are past the first-run wizard." ;
+  [ "${onboarded}" = yes ] && echo "  Both accounts are past the first-run wizard." ;
   immich_system_settings "${token}" || status=1 ;
+  immich_admin_onboarded "${token}" || status=1 ;
   cd ${WORKSPACE_ROOT}/${doc_name};
   return ${status} ;
 }

@@ -220,7 +220,13 @@ test('a new library on DDEV: its services, its photos\' folder, started and chec
   assert.strictEqual((b.calls.match(/^body PUT \/api\/users\/me\/onboarding \{"isOnboarded":true\}$/gm) || []).length, 2, 'both accounts past the first-run wizard');
   const config = JSON.parse((/^system-config (.*)$/m.exec(b.calls) || [])[1] || '{}');
   assert.deepStrictEqual([config.newVersionCheck, config.map, config.other], [{ enabled: false }, { enabled: true }, 1], 'the version check off, the map and the rest as Immich has them');
-  const order = ['drop_database', 'ddev config', 'ddev start -y', 'server/ping', 'admin-sign-up', 'POST /api/admin/users', 'onboarding', 'system-config'].map((s) => b.calls.indexOf(s));
+  const setup = b.calls.split('\n').filter((l) => l.includes('/api/system-metadata/admin-onboarding'));
+  assert.strictEqual(setup.filter((l) => l.startsWith('ddev exec')).length, 1, 'the server\'s own first-run setup marked done, once');
+  assert.match(setup.find((l) => l.startsWith('ddev exec')) || '', /-X POST http:\/\/immich-server:2283\/api\/system-metadata\/admin-onboarding .*-H 'Authorization: Bearer tok-admin@example\.com'/, 'by the admin');
+  assert.match(b.calls, /^body POST \/api\/system-metadata\/admin-onboarding \{"isOnboarded":true\}$/m);
+  assert.match(b.stdout, /^  Both accounts are past the first-run wizard\.$/m);
+  assert.match(b.stdout, /^  the library's own first-run setup marked done: the admin signs in to the photos$/m);
+  const order = ['drop_database', 'ddev config', 'ddev start -y', 'server/ping', 'admin-sign-up', 'POST /api/admin/users', 'onboarding', 'system-config', 'admin-onboarding'].map((s) => b.calls.indexOf(s));
   assert.ok(order.every((i) => i >= 0), b.calls);
   assert.deepStrictEqual([...order].sort((x, y) => x - y), order, 'in order');
   assert.match(b.stdout, /^dev photos is served: Immich v3\.4\.2, its photos in library\/\.$/m);
@@ -234,6 +240,9 @@ test('a library that has its admin and its user already: the user\'s password se
   assert.match(there.calls, /^body PUT \/api\/admin\/users\/u-1 \{"password": "dD\.123123ddd", "shouldChangePassword": false\}$/m);
   const down = build({ env: { FAIL: 'signup' } });
   assert.strictEqual(down.status, 1, 'a library that cannot make its admin fails the build');
+  const unset = build({ env: { FAIL: 'adminonboarding' } });
+  assert.strictEqual(unset.status, 1, 'a library whose own first-run setup cannot be marked done fails the build');
+  assert.match(unset.stderr + unset.stdout, /The library's own first-run setup could not be marked done\./);
   const b = build({ env: { INSTALL: '', ADD_USERS: '' } });
   assert.strictEqual(b.status, 0, b.stderr + b.stdout);
   assert.doesNotMatch(b.calls, /^ddev start|server\/ping|curl -s -o/m, 'nothing is started');
