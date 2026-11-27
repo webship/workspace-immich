@@ -145,11 +145,13 @@ The plugin declares the core's database hook instead (webship/workspace#937, cor
 
   A restore that fails leaves the library's database as it was.
 
-**An Import puts back the database, not the photos.** The photos come back with the project's backup archive. When the two disagree, Immich says so in Administration, Maintenance, Integrity Report:
-- **Missing Files** are in the database but not in the folder. Their thumbnails do not load, and opening one says it cannot be found.
-- **Untracked Files** are in the folder but not in the database. The timeline does not show them.
+**An Import puts back the database, not the photos.** The photos come back with the project's backup archive. When the two disagree, Immich says so in Administration, Maintenance, Integrity Report. Its checks run every day at 3 AM, and Check All runs them at once:
+- **Missing Files** are files the database holds and the folder does not. A photo counts three times: its original, its preview and its thumbnail. The timeline still lists the photo, and its tile and the photo opened show a broken picture with "Error loading image": the server answers 404 for each of its files.
+- **Untracked Files** are files in the folder that the database knows nothing of, such as the photos added after the dump an Import put back. The timeline does not show them.
 
 Restore the archive and the database from the same Backup to keep them in step.
+
+Proven on Docker Compose: a photo added after a Backup, then that Backup's database imported, gave three Untracked Files; a photo whose files were moved out of the folder gave three Missing Files, and 404 for its thumbnail, its preview and its original.
 
 On a terminal, in the project's folder:
 
@@ -161,7 +163,8 @@ bash ~/workspace/core/scripts/runtime-verb.sh import-db --file=library/backups/i
 ```
 
 On Docker Compose, Podman and Kubernetes the row's menu lists Export and Import for this project from Webship
-Workspace 1.0.43 (webship/workspace#942).
+Workspace 1.0.43 (webship/workspace#942). Before it, the row's Backup works as above, and a restore is the
+terminal's, as above.
 
 ### Its settings: the version check and the map
 
@@ -205,15 +208,21 @@ Feature: The first photos
 ### Runtimes
 
 The commands are the same on every runtime. The builder speaks DDEV's verbs, and on another runtime the core's layer gives each verb its meaning there (webship/workspace#694, #841 and #900):
-- the server's image is the stack, its start the web container's own;
+- the server's image is the stack, and the web container runs Immich's own start (`start.sh`) once Postgres answers;
 - Postgres and valkey are services of the project.
 
 | Runtime | The address of the library | Where the photos are | Proven with this builder |
 | --- | --- | --- | --- |
-| DDEV (the default) | `https://<name>.ddev.site` | `<project>/library` (the server's `/data`) | PROOF-DDEV |
-| Docker Compose (`--runtime docker`) | `http://127.0.0.1:<port>`, a free port kept in `compose.yaml` | `<project>/library` (in the web container: `/var/www/html/library`) | PROOF-DOCKER |
-| Podman (`--runtime podman`) | `http://127.0.0.1:<port>` | `<project>/library` | PROOF-PODMAN |
-| Kubernetes (`--runtime kubernetes`) | `http://<node address>:<NodePort>` | PROOF-K8S-WHERE | PROOF-KUBERNETES |
+| DDEV (the default) | `https://<name>.ddev.site` | `<project>/library` (the server's `/data`) | Built and served in 54 s with the images already pulled (the server, Postgres and valkey as services of the project, DDEV's db omitted); both accounts made past the first-run wizard; the version check off, the map on, machine learning off with no machine-learning container; its ping, its version (3.4.2) and its login page answered; the row's Backup: the archive held the photo and its thumbnails, with the whole dump (`-db.sql.gz`, 18 MB) beside it; after a photo and an album were added, the row's Import put the database back with an export taken first: one photo and no album, read with the same sign-in, and both originals still in `library/`; one of Immich's own backups restored on a terminal; the testing setup from npm and its first feature (4 scenarios, 15 steps) |
+| Docker Compose (`--runtime docker`) | `http://127.0.0.1:<port>`, a free port kept in `compose.yaml` | `<project>/library` (in the web container: `/var/www/html/library`) | Built in 35 s with the web image's layers cached, served at its own port; the same checks; the row's menu with Export, Import and Backup (Webship Workspace 1.0.43), and the same Backup and Restore with the same counts; the testing setup and its first feature (4 scenarios, 15 steps); the plugin's features on the dashboard, its Docker Compose scenarios among them; the integrity report of a library whose database and folder disagree (see [Its photos and its database](#its-photos-and-its-database)) |
+| Podman (`--runtime podman`) | `http://127.0.0.1:<port>` | `<project>/library` | Built in 1 min 51 s with its three images already in Podman's own storage (the first build takes them there: 9 minutes here), served at its own port; the same checks; the row's menu with Export, Import and Backup (Webship Workspace 1.0.43), and the same Backup and Restore with the same counts; the testing setup from npm (immich-steps 2.0.0) and its first feature (4 scenarios, 15 steps); the skill's three examples (10 scenarios); the plugin's features on the dashboard, its Podman scenarios among them |
+| Kubernetes (`--runtime kubernetes`) | `http://<node address>:<NodePort>` | `<project>/library` too: the web pod mounts the project's folder by hostPath (see below) | On kind: built in 6 min 14 s (the web image built by Docker on Immich's server image and loaded into the node; Postgres and valkey taken by the node), served at the node's address; the same checks; the row's menu with Export, Import and Backup (Webship Workspace 1.0.43), and the same Backup and Restore with the same counts; the photos the server wrote in its pod found in the project's folder on this machine, and in the archive; the testing setup on the cluster and its first feature (4 scenarios, 15 steps); the plugin's features on the dashboard, its Kubernetes scenarios among them |
+
+**On Kubernetes the photos are in the project too.** The web pod mounts the project's folder at `/var/www/html` by hostPath, and the server's `/data` is its `library/`. The workspace's kind cluster has `/home` mounted into its node at the same path (and the workspace's root when it lives elsewhere), so the hostPath is the project's folder on this machine:
+- the photos the server writes are in `<project>/library` here, and the row's Backup archives them, as on the other runtimes (proven: a photo uploaded to the library on kind was in the folder and in the archive, with its thumbnails);
+- the database is not in the project: Postgres keeps its data in the claim `svc-postgres` of the project's namespace (`ws-<name>`), in the cluster's storage. The row's Backup takes it as the dump beside the archive, through the database hook.
+
+On a cluster of your own (`WORKSPACE_KUBE_CONTEXT`), the hostPath is a folder of the node the pod runs on. The photos are in this machine's project only when that node sees this machine's folder at the same path. Without the folder there, the pod does not start: the core asks for an existing directory (`type: Directory`).
 
 A project of the builder is known by DDEV's file on DDEV and by its claim on another runtime. So the testing setup, the Users tools, the database hook and the dashboard's row work the same on each. Lando and Docksal are runtimes of the workspace too, not proven with this builder yet: it says so and stops, before anything is made.
 
