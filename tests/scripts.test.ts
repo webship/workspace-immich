@@ -183,6 +183,7 @@ const layer = (rt: string, url: string) => [
   'rt_claim() { echo "rt_claim $*" >> "${LOG}" ; }',
   'rt_stack() { echo "rt_stack $*" >> "${LOG}" ; }',
   'rt_service() { echo "rt_service $*" >> "${LOG}" ; }',
+  'rt_web_build() { echo "rt_web_build $1: $(grep -v \'^#\' | tr \'\\n\' \' \')" >> "${LOG}" ; }',
   'rt_serve() { echo "rt_serve $1" >> "${LOG}" ; printf "%s\\n" "$2" > "${LOG%/*}/serve.txt" ; }',
 ].join('\n');
 
@@ -197,6 +198,13 @@ function build(opts: { layer?: string; env?: Record<string, string> } = {}) {
   const serve = path.join(r.dir, 'serve.txt');
   return { ...r, root, project: path.join(root, 'dev', 'photos'), serve: fs.existsSync(serve) ? fs.readFileSync(serve, 'utf8') : '' };
 }
+
+test('every answer of the library\'s API is read to its end: a reader that stops at the first line would fail the exec (Podman\'s compose says so)', () => {
+  const fun = read('scripts/functions/fun-immich.sh');
+  assert.ok(fun.includes('function immich_api()'));
+  assert.doesNotMatch(fun, /immich_api [^\n]*\| head/, 'the code taken with sed -n 1p, never head');
+  assert.match(fun, /immich_api PUT \/api\/users\/me\/onboarding "\$\{t\}" \| sed -n 1p\)/);
+});
 
 test('a new library on DDEV: its services, its photos\' folder, started and checked, its accounts past the wizard, the version check off', () => {
   const b = build();
@@ -256,6 +264,9 @@ for (const [rt, url] of [['docker', 'http://127.0.0.1:43210'], ['podman', 'http:
     assert.ok(b.calls.includes(`\nrt_stack image ${SERVER}\n`), b.calls);
     assert.ok(b.calls.includes(`\nrt_service postgres ${POSTGRES} --port 5432 --env-file .webship-immich/postgres.env --volume /var/lib/postgresql/data\n`), b.calls);
     assert.ok(b.calls.includes(`\nrt_service valkey ${VALKEY} --port 6379\n`), b.calls);
+    assert.match(b.calls, /^rt_web_build immich: ENTRYPOINT \[\] HEALTHCHECK --start-period=300s --interval=10s --timeout=10s --retries=3 CMD immich-healthcheck $/m,
+      'the image\'s own ENTRYPOINT (tini -- bash -c) cleared, so the runtime\'s start runs; its healthcheck given time to start');
+    assert.ok(b.calls.indexOf('rt_stack image') < b.calls.indexOf('rt_web_build'), 'after the stack');
     assert.match(b.calls, /^rt_serve 2283$/m);
     assert.match(b.serve, /^while IFS= read -r l ; do .* done < \/var\/www\/html\/\.webship-immich\/env && until \(exec 3<>\/dev\/tcp\/postgres\/5432\) 2> \/dev\/null ; do sleep 2 ; done && cd \/usr\/src\/app && exec start\.sh$/m);
     assert.match(fs.readFileSync(path.join(b.project, '.webship-immich', 'env'), 'utf8'), /^IMMICH_MEDIA_LOCATION=\/var\/www\/html\/library$/m);

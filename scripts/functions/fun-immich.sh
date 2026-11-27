@@ -168,6 +168,14 @@ YAMLEOF
 function immich_runtime_config() {
   rt_claim immich || return 1 ;
   rt_stack image "${IMMICH_SERVER_IMAGE}" || return 1 ;
+  # The server's image starts through `tini -- /bin/bash -c` (its ENTRYPOINT), which would take the web container's own
+  # command for a script and exit at once: the project's web image clears it, so the runtime's start runs as it is.
+  # Its HEALTHCHECK asks the server at once, with no time to start: on Podman a first answer before the server listens
+  # marks the container unhealthy and stops the start (seen on a real build). The same check, given time to start.
+  printf '%s\n' "# Immich's image starts through tini -- /bin/bash -c (its ENTRYPOINT): cleared, so the web container's own command runs." 'ENTRYPOINT []' \
+    "# Immich's own healthcheck, given time to start (on Podman a first failure would mark the container unhealthy)." \
+    'HEALTHCHECK --start-period=300s --interval=10s --timeout=10s --retries=3 CMD immich-healthcheck' \
+    | rt_web_build immich || return 1 ;
   rt_service postgres "${IMMICH_POSTGRES_IMAGE}" --port 5432 --env-file "${IMMICH_OWN}/postgres.env" --volume /var/lib/postgresql/data || return 1 ;
   rt_service valkey "${IMMICH_VALKEY_IMAGE}" --port 6379 || return 1 ;
   rt_serve "${IMMICH_PORT}" "$(immich_serve_line "/var/www/html/${IMMICH_OWN}/env")" ;
@@ -187,6 +195,8 @@ function immich_wait() {
 
 # A request to the library's API from the web container: METHOD PATH [TOKEN], a JSON body on the input (or none);
 # the answer's status on the first line, its body after it.
+# The answer is read to its end by the caller (sed -n 1p for the code, never head -1): a reader that stops at the first
+# line closes the pipe on the exec, which then fails (Podman's compose says "Error: executing …" for it).
 function immich_api() {
   local method="$1" path="$2" token="${3:-}" data='--data-binary @-' ;
   [ "${method}" = GET ] && data='' ;
@@ -208,7 +218,7 @@ function immich_system_settings() {
   check="$(immich_setting version_check off)" ; map="$(immich_setting map on)" ;
   config="$(immich_api GET /api/system-config "${token}" < /dev/null | tail -n +2)" ;
   config="$(echo "${config}" | python3 -c 'import json, sys; c = json.load(sys.stdin); c["newVersionCheck"]["enabled"] = sys.argv[1] == "on"; c["map"]["enabled"] = sys.argv[2] == "on"; print(json.dumps(c))' "${check}" "${map}")" || return 1 ;
-  [ "$(echo "${config}" | immich_api PUT /api/system-config "${token}" | head -1)" = '200' ] || { echo "The library's settings could not be set." >&2 ; return 1 ; } ;
+  [ "$(echo "${config}" | immich_api PUT /api/system-config "${token}" | sed -n 1p)" = '200' ] || { echo "The library's settings could not be set." >&2 ; return 1 ; } ;
   echo "  the version check ${check}, the map ${map} (core/config/plugin.immich.settings.yml)" ;
 }
 
@@ -258,7 +268,7 @@ function add_immich_users() {
   for user in "${users[@]}" ; do
     user_mail="user_${user}_mail"; user_password="user_${user}_password";
     local t ; t="$(immich_token "${!user_mail}" "${!user_password}")" || { status=1 ; continue ; } ;
-    [ "$(echo '{"isOnboarded":true}' | immich_api PUT /api/users/me/onboarding "${t}" | head -1)" = '200' ] || { echo "  ${!user_mail}: not past the first-run wizard." ; status=1 ; } ;
+    [ "$(echo '{"isOnboarded":true}' | immich_api PUT /api/users/me/onboarding "${t}" | sed -n 1p)" = '200' ] || { echo "  ${!user_mail}: not past the first-run wizard." ; status=1 ; } ;
   done
   echo "  Both accounts are past the first-run wizard." ;
   immich_system_settings "${token}" || status=1 ;
@@ -279,7 +289,7 @@ function cancel_immich_users() {
     [ "${!user_role}" = 'admin' ] && continue ;
     id="$(echo "${list}" | python3 -c 'import json, sys; print(next((u["id"] for u in json.load(sys.stdin) if u["email"] == sys.argv[1]), ""))' "${!user_mail}" 2> /dev/null)" ;
     [ -n "${id}" ] || { echo "  ${!user_mail}: not there." ; continue ; } ;
-    if [ "$(python3 -c 'import json, secrets; print(json.dumps({"password": secrets.token_urlsafe(24)}))' | immich_api PUT "/api/admin/users/${id}" "${token}" | head -1)" = '200' ] ; then
+    if [ "$(python3 -c 'import json, secrets; print(json.dumps({"password": secrets.token_urlsafe(24)}))' | immich_api PUT "/api/admin/users/${id}" "${token}" | sed -n 1p)" = '200' ] ; then
       echo "  ${!user_mail}: can no longer sign in (its password is one no one knows)." ;
     else
       echo "  ${!user_mail}: could not be changed." ; status=1 ;
