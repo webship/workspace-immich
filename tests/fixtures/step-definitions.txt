@@ -1,0 +1,458 @@
+# @webship-js/immich-steps 2.0.0 and webship-js 2.0.19: the step definitions a project gets, one regex a line.
+^every image should have an alt attribute$
+^every form field should have an accessible label$
+^the page should have a main landmark$
+^the page should have a navigation landmark$
+^the page should have exactly one h1$
+^the focused element should match "([^"]*)"$
+^the focused element should be labeled "([^"]*)"$
+^the page should declare a language$
+^the page language should be "([^"]*)"$
+^the heading hierarchy should be valid$
+^the page should have a skip link$
+^every button should have an accessible name$
+^every link should have an accessible name$
+^no element should have a positive tabindex$
+^every ARIA reference should resolve$
+^every ARIA role should be valid$
+^required fields should be consistently marked$
+^the page should have a title$
+^user zoom should be allowed$
+^the page should pass an accessibility audit(?: at level "(A|AA|AAA)")?$
+^the page should have no (critical|serious|moderate|minor) accessibility violations$
+^the page should have no accessibility violations$
+^the element "([^"]*)" should not violate the accessibility rule "([^"]*)"$
+^the element "([^"]*)" should pass an accessibility audit$
+^the page should pass an accessibility audit excluding "([^"]*)"$
+^the page should not violate the accessibility rule "([^"]*)"$
+^(I |we )*print accessibility violations$
+^the page should pass the accessibility rules "([^"]*)"$
+^the page should pass the full accessibility check(?: at level "(A|AA|AAA)")?$
+^(?:I |we )*print the full accessibility check$
+^(I |we )*press( the)* "([^"]*)?"( button)*$
+^(I |we )*press "([^"]*)?" by( its)*(?: "([^"]*)?")* (attribute|attr)$
+^(I |we )*click "([^"]*)?"$
+^(I |we )*click "([^"]*)?" by( its)*(?: "([^"]*)?")* (attribute|attr)$
+^(I |we )*click "([^"]*)?" in( the)* "([^"]*)?" row$
+^(I |we )*follow "([^"]*)"$
+^(I |we )*attach( the)* file "([^"]*)?" to "([^"]*)?"$
+^(?:I am|we are) authenticating as "([^"]*)" with "([^"]*)" password$
+^(?:I |we )?set header "([^"]*)" with value "([^"]*)"$
+^(?:the API base URL is|I set the API base URL to|the base URL is) "([^"]*)"$
+^(?:I set the header|we set the header|the header) "([^"]*)" (?:to|is) "([^"]*)"$
+^(?:I|we) set the following headers:$
+^(?:I set the request body to|we set the request body to|the request body is) '([^']*)'$
+^(?:I|we) set the request body with:$
+^(?:I |we )?send a ([A-Z]+) request to "([^"]+)"$
+^(?:I |we )?send a ([A-Z]+) request to "([^"]+)" with values:$
+^(?:I |we )?send a ([A-Z]+) request to "([^"]+)" with body:$
+^(?:I |we )?send a ([A-Z]+) request to "([^"]+)" with form data:$
+^(?:the )?API response code should be (\d+)$
+^(?:the )?API response should contain "([^"]*)"$
+^(?:the )?API response should not contain "([^"]*)"$
+^(?:the )?API response should contain json:$
+^(?:the JSON response should have|the API response should have|the JSON property) "([^"]*)" (?:equal to|should be) (.+)$
+^(?:the JSON response should have property|the API response should contain property) "([^"]*)"$
+^(?:the JSON response should not have property|the API response should not contain property) "([^"]*)"$
+^(?:the response should be valid JSON|the API response should be valid JSON)$
+^(?:the response header|the header) "([^"]*)" should (be|contain) "([^"]*)"$
+^print API response$
+^(?:the )?API response should( not)? contain the header "([^"]*)"$
+^(?:I|we) set placeholder "([^"]*)" to "([^"]*)"$
+^(I |we )*save the JSON property "([^"]*)" as placeholder "([^"]*)"$
+^(I |we )*should( not)* see "([^"]*)?"$
+^(I |we )*should( not)* see text matching "([^"]*)?"$
+^(I |we )*should( not)* see "([^"]*)?" in( the)* "([^"]*)?" row$
+^(I |we )*should( not)* see (a|an) "([^"]*)?" element$
+^(I |we )*should( not)* see (a|an) "([^"]*)?" element by( its)*(?: "([^"]*)?")* (attribute|attr)$
+^(I |we )*should( not)* see "([^"]*)?" in( the)* "([^"]*)?" element$
+^(I |we )*should( not)* see "([^"]*)?" in( the)* "([^"]*)?" element by( its)*(?: "([^"]*)?")* (attribute|attr)$
+^(I |we )*should( not)* see text matching "([^"]*)?" in( the)* "([^"]*)?" element$
+^(the )*"([^"]*)?" element should( not)* contain "([^"]*)?"$
+^(I |we )*should see (\d+) "([^"]*)" elements?$
+^(the )*"([^"]*)?" link should contain "([^"]*)?"$
+^(the )*"([^"]*)?" link should contain "([^"]*)?" by( its)*(?: "([^"]*)?")* (attribute|attr)$
+^(the )*response should( not)* contain "([^"]*)?"$
+^(the )*response status code should( not)* be (\d+)$
+^(I |we )*save the auth state to "([^"]*)"$
+^(I |we )*restore the auth state from "([^"]*)"$
+^(I |we )*clear the auth state$
+^the system time is "([^"]*)"$
+^(I |we )*advance the clock by (\d+) ?ms$
+^(I |we )*advance the clock by (\d+) seconds?$
+^(I |we )*advance the clock by (\d+) minutes?$
+^(I |we )*pause the clock$
+^(I |we )*resume the clock$
+^(I |we )*set the system time to "([^"]*)"$
+^a cookie with the name (?:"[^"]*"|'[^']*') should exist$
+^a cookie with the name (?:"[^"]*"|'[^']*') and the value (?:"[^"]*"|'[^']*') should exist$
+^a cookie with the name (?:"[^"]*"|'[^']*') and a value containing (?:"[^"]*"|'[^']*') should exist$
+^a cookie with a name containing (?:"[^"]*"|'[^']*') should exist$
+^a cookie with a name containing (?:"[^"]*"|'[^']*') and the value (?:"[^"]*"|'[^']*') should exist$
+^a cookie with a name containing (?:"[^"]*"|'[^']*') and a value containing (?:"[^"]*"|'[^']*') should exist$
+^a cookie with the name (?:"[^"]*"|'[^']*') should not exist$
+^a cookie with the name (?:"[^"]*"|'[^']*') and the value (?:"[^"]*"|'[^']*') should not exist$
+^a cookie with the name (?:"[^"]*"|'[^']*') and a value containing (?:"[^"]*"|'[^']*') should not exist$
+^a cookie with a name containing (?:"[^"]*"|'[^']*') should not exist$
+^a cookie with a name containing (?:"[^"]*"|'[^']*') and the value (?:"[^"]*"|'[^']*') should not exist$
+^a cookie with a name containing (?:"[^"]*"|'[^']*') and a value containing (?:"[^"]*"|'[^']*') should not exist$
+^print current URL$
+^print last response$
+^(I |we )*will accept the next dialog$
+^(I |we )*will dismiss the next dialog$
+^(I |we )*will accept the next dialog with "([^"]*)"$
+^the last dialog message should be "([^"]*)"$
+^the last dialog message should contain "([^"]*)"$
+^the last dialog type should be "([^"]*)"$
+^(I |we )*accept all confirmation dialogs$
+^(I |we )*do not accept any confirmation dialogs$
+^the element (?:"[^"]*"|'[^']*') should appear after the element (?:"[^"]*"|'[^']*')$
+^the text (?:"[^"]*"|'[^']*') should appear after the text (?:"[^"]*"|'[^']*')$
+^the text (?:"[^"]*"|'[^']*') should appear after the text (?:"[^"]*"|'[^']*') in the (?:"[^"]*"|'[^']*') element$
+^the element (?:"[^"]*"|'[^']*') with the attribute (?:"[^"]*"|'[^']*') and the value (?:"[^"]*"|'[^']*') should exist$
+^the element (?:"[^"]*"|'[^']*') with the attribute (?:"[^"]*"|'[^']*') and the value containing (?:"[^"]*"|'[^']*') should exist$
+^the element (?:"[^"]*"|'[^']*') with the attribute (?:"[^"]*"|'[^']*') and the value (?:"[^"]*"|'[^']*') should not exist$
+^the element (?:"[^"]*"|'[^']*') with the attribute (?:"[^"]*"|'[^']*') and the value containing (?:"[^"]*"|'[^']*') should not exist$
+^the element (?:"[^"]*"|'[^']*') should be at the top of the viewport$
+^the element (?:"[^"]*"|'[^']*') should be centered in the viewport$
+^(I |we )*click on the element "([^"]*)"$
+^(I |we )*trigger the JS event "([^"]*)" on the element "([^"]*)"$
+^(I |we )*scroll to the element "([^"]*)"$
+^(I |we )*hover over the element "([^"]*)"$
+^(I |we )*focus on the element "([^"]*)"$
+^the element (?:"[^"]*"|'[^']*') should be displayed$
+^the element (?:"[^"]*"|'[^']*') should not be displayed$
+^the element (?:"[^"]*"|'[^']*') should be displayed within a viewport$
+^the element (?:"[^"]*"|'[^']*') should be displayed within a viewport with a top offset of -?\d+ pixels$
+^the element (?:"[^"]*"|'[^']*') should not be displayed within a viewport with a top offset of -?\d+ pixels$
+^the element (?:"[^"]*"|'[^']*') should not be displayed within a viewport$
+^the field (?:"[^"]*"|'[^']*') should be empty$
+^the field (?:"[^"]*"|'[^']*') should not be empty$
+^the field (?:"[^"]*"|'[^']*') should exist$
+^the field (?:"[^"]*"|'[^']*') should not exist$
+^the field (?:"[^"]*"|'[^']*') should have (?:"[^"]*"|'[^']*') state$
+^the field (?:"[^"]*"|'[^']*') should be required$
+^the field (?:"[^"]*"|'[^']*') should not be required$
+^(I |we )*fill in the multi-value field "([^"]*)" with the following values:$
+^(I |we )*fill in the color field "([^"]*)" with the value "([^"]*)"$
+^the color field (?:"[^"]*"|'[^']*') should have the value (?:"[^"]*"|'[^']*')$
+^(I |we )*fill in the WYSIWYG field "([^"]*)" with the "([^"]*)"$
+^the option (?:"[^"]*"|'[^']*') should exist within the select element (?:"[^"]*"|'[^']*')$
+^the option (?:"[^"]*"|'[^']*') should not exist within the select element (?:"[^"]*"|'[^']*')$
+^the option (?:"[^"]*"|'[^']*') should be selected within the select element (?:"[^"]*"|'[^']*')$
+^the option (?:"[^"]*"|'[^']*') should not be selected within the select element (?:"[^"]*"|'[^']*')$
+^(I |we )*unselect "([^"]*)" from "([^"]*)"$
+^(I |we )*clear the select "([^"]*)"$
+^(I |we )*check the checkbox "([^"]*)"$
+^(I |we )*uncheck the checkbox "([^"]*)"$
+^(I |we )*choose the radio button "([^"]*)"$
+^(I |we )*fill in the field "([^"]*)" with "([^"]*)"$
+^browser validation for the form (?:"[^"]*"|'[^']*') is disabled$
+^(I |we )*fill in the datetime field "([^"]*)" with date "([^"]*)" and time "([^"]*)"$
+^(I |we )*fill in the date part of the datetime field "([^"]*)" with "([^"]*)"$
+^(I |we )*fill in the time part of the datetime field "([^"]*)" with "([^"]*)"$
+^(I |we )*fill in the start datetime field "([^"]*)" with date "([^"]*)" and time "([^"]*)"$
+^(I |we )*fill in the end datetime field "([^"]*)" with date "([^"]*)" and time "([^"]*)"$
+^(the )*"([^"]*)?" field should( not)* contain "([^"]*)?"$
+^(the )*"([^"]*)?" checkbox should( not)* be checked$
+^(the )*"([^"]*)?" checkbox is( not)* checked$
+^(the )*checkbox "([^"]*)?" should( not)* be checked$
+^(the )*checkbox "([^"]*)?" is( not)* checked$
+^(the )*radio button "([^"]*)?" should( not)* be selected$
+^(the )*radio button with value "([^"]*)?" should( not)* be selected$
+^(the )*"([^"]*)?" radio button is( not)* selected$
+^(I |we )*download the file from the URL "([^"]*)"$
+^(I |we )*download the file from the link "([^"]*)"$
+^the downloaded file should contain:$
+^the downloaded file name should be (?:"[^"]*"|'[^']*')$
+^the downloaded file name should contain (?:"[^"]*"|'[^']*')$
+^the downloaded file should be a zip archive containing the following files named:$
+^the downloaded file should be a zip archive containing the following files partially named:$
+^the downloaded file should be a zip archive not containing the following files partially named:$
+^(I |we )*fill in "([^"]*)?" with "([^"]*)?"$
+^(I |we )*fill in "([^"]*)?" with "([^"]*)?" by( its)*(?: "([^"]*)?")* (attribute|attr)$
+^(I |we )*fill in "([^"]*)?" with:$
+^(I |we )*fill in "([^"]*)?" with: by( its)*(?: "([^"]*)?")* (attribute|attr)$
+^(I |we )*fill in "([^"]*)?" for "([^"]*)?"$
+^(I |we )*fill in "([^"]*)?" for "([^"]*)?" by( its)*(?: "([^"]*)?")* (attribute|attr)$
+^(I |we )*fill in( the)* following:$
+^(I |we )*fill in( the)* following: by( its)*(?: "([^"]*)?")* (attribute|attr)$
+^(I |we )*select "([^"]*)?" from "([^"]*)?"$
+^(I |we )*additionally select "([^"]*)" from "([^"]*)"$
+^(I |we )*check "([^"]*)?"$
+^(I |we )*uncheck "([^"]*)?"$
+^(I |we )*select radio button "([^"]*)?"$
+^(I |we )*switch to (the )?iframe "([^"]*)"$
+^(I |we )*switch to iframe with locator "([^"]*)"$
+^(I |we )*switch to the root document$
+^(I |we )*switch to the iframe with title "([^"]*)"$
+^(I |we )*switch to the iframe with name "([^"]*)"$
+^(I |we )*click "([^"]*)" inside the iframe$
+^(I |we )*click "([^"]*)" by attr inside the iframe$
+^(I |we )*fill in "([^"]*)" with "([^"]*)" inside the iframe$
+^I should see "([^"]*)" inside the iframe$
+^I should not see "([^"]*)" inside the iframe$
+^(I |we )*hover over "([^"]*)"$
+^(I |we )*move the pointer to "([^"]*)"$
+^(I |we )*double[- ]click on "([^"]*)"$
+^(I |we )*right[- ]click on "([^"]*)"$
+^(I |we )*middle[- ]click on "([^"]*)"$
+^(I |we )*click on "([^"]*)" while holding "([^"]*)"$
+^(I |we )*drag "([^"]*)" to "([^"]*)"$
+^(I |we )*set the viewport size to (\d+)x(\d+)$
+^(I |we )*tap on "([^"]*)"$
+^there should be no JavaScript errors$
+^there should be no JavaScript warnings$
+^JavaScript errors should not match "([^"]*)"$
+^print JavaScript errors$
+^(I |we )*press the key "([^"]*)"$
+^(I |we )*press the key "([^"]*)" on the element "([^"]*)"$
+^(I |we )*press the keys "([^"]*)"$
+^(I |we )*press the keys "([^"]*)" on the element "([^"]*)"$
+^the link (?:"[^"]*"|'[^']*') with the href (?:"[^"]*"|'[^']*') should exist$
+^the link (?:"[^"]*"|'[^']*') with the href (?:"[^"]*"|'[^']*') within the element (?:"[^"]*"|'[^']*') should exist$
+^the link (?:"[^"]*"|'[^']*') with the href (?:"[^"]*"|'[^']*') should not exist$
+^the link (?:"[^"]*"|'[^']*') with the href (?:"[^"]*"|'[^']*') within the element (?:"[^"]*"|'[^']*') should not exist$
+^the link with the title (?:"[^"]*"|'[^']*') should exist$
+^the link with the title (?:"[^"]*"|'[^']*') should not exist$
+^the link (?:"[^"]*"|'[^']*') should be an absolute link$
+^the link (?:"[^"]*"|'[^']*') should not be an absolute link$
+^(I |we )*click on the link with the title "([^"]*)"$
+^the meta tag should exist with the following attributes:$
+^the meta tag should not exist with the following attributes:$
+^the (?:"[^"]*"|'[^']*') meta tag should not contain any HTML tags$
+^(I |we )*should( not)* see (a |the )*modal( dialog)*$
+^(I |we )*should( not)* see (a |the )*modal with title "([^"]*)?"$
+^(I |we )*should( not)* see (a |the )*"([^"]*)?" modal$
+^(I |we )*should( not)* see "([^"]*)?" in( the)* modal( dialog)*$
+^the modal should contain (?:"[^"]*"|'[^']*')$
+^the modal should not contain (?:"[^"]*"|'[^']*')$
+^(I |we )*click "([^"]*)?"( button)* in( the)* modal( dialog)*$
+^(I |we )*click on "([^"]*)" in the modal$
+^(I |we )*(close|dismiss)( the)* modal( dialog)*$
+^(I am |we are )?an anonymous user$
+^(I am |we are )?on( the)* (homepage|frontpage)$
+^(I am |we are )*on( the)* "([^"]*)?"( page)*$
+^(I go |I navigate |we go |we navigate |navigating )?to( the)* (homepage|frontpage)$
+^(I go |I navigate |we go |we navigate |navigating )?to "([^"]*)?"$
+^(I |we )*move forward one page$
+^(I |we )*move backward one page$
+^(I |we )*reload( the)*( page)*$
+^(I |we )*should( not)* be on( the)* (homepage|frontpage)$
+^(I |we )*should( not)* be on( the)* "([^"]*)?"( page)*$
+^(the )*url should( not)* match "([^"]*)?"$
+^the URL "([^"]*)" returns the JSON:$
+^the URL "([^"]*)" returns status (\d+)(?: with body "([^"]*)")?$
+^the URL "([^"]*)" is blocked$
+^the URL "([^"]*)" is delayed by (\d+) ?ms$
+^the network is offline$
+^the network is online$
+^(I |we )*start recording network requests$
+^a request to "([^"]*)" should have been made$
+^a (GET|POST|PUT|PATCH|DELETE) request to "([^"]*)" should have been made$
+^no request to "([^"]*)" should have been made$
+^the path should be (?:"[^"]*"|'[^']*')$
+^the path should not be (?:"[^"]*"|'[^']*')$
+^current url should have the (?:"[^"]*"|'[^']*') parameter$
+^current url should have the (?:"[^"]*"|'[^']*') parameter with the (?:"[^"]*"|'[^']*') value$
+^current url should not have the (?:"[^"]*"|'[^']*') parameter$
+^current url should not have the (?:"[^"]*"|'[^']*') parameter with the (?:"[^"]*"|'[^']*') value$
+^the basic authentication with the username (?:"[^"]*"|'[^']*') and the password (?:"[^"]*"|'[^']*')$
+^(I |we )*go back$
+^the response should contain the header (?:"[^"]*"|'[^']*')$
+^the response should not contain the header (?:"[^"]*"|'[^']*')$
+^the response header (?:"[^"]*"|'[^']*') should contain the value (?:"[^"]*"|'[^']*')$
+^the response header (?:"[^"]*"|'[^']*') should not contain the value (?:"[^"]*"|'[^']*')$
+^the following responsive breakpoints:$
+^(I |we )*set the viewport to the "([^"]*)" breakpoint$
+^(I |we )*set the viewport width to (\d+)$
+^(I |we )*set the viewport height to (\d+)$
+^(I |we )*set the viewport to (\d+) by (\d+)$
+^a REST header (?:"[^"]*"|'[^']*') with value (?:"[^"]*"|'[^']*')$
+^(I |we )*send a REST "([^"]*)" request to "([^"]*)"$
+^(I |we )*send a REST "([^"]*)" request to "([^"]*)" with body:$
+^the REST response status code should be -?\d+$
+^the REST response should contain (?:"[^"]*"|'[^']*')$
+^(I |we )*save screenshot$
+^(I |we )*save fullscreen screenshot$
+^(I |we )*save (\d+) x (\d+) screenshot$
+^(I |we )*save fullscreen (\d+) x (\d+) screenshot$
+^(I |we )*save screenshot with name "([^"]*)"$
+^(I |we )*save fullscreen screenshot with name "([^"]*)"$
+^(I scroll|we scroll|scrolling)? down(?: (\d+))?$
+^(I scroll|we scroll|scrolling)? up(?: (\d+))?$
+^(I scroll|we scroll|scrolling)? to( the)* top( of the page)*$
+^(I scroll|we scroll|scrolling)? to( the)* bottom( of the page)*$
+^(I scroll|we scroll|scrolling)? to top of "([^"]*)"$
+^(I scroll|we scroll|scrolling)? to bottom of "([^"]*)"$
+^(I scroll|we scroll|scrolling)? right(?: (\d+))?$
+^(I scroll|we scroll|scrolling)? left(?: (\d+))?$
+^(I scroll|we scroll|scrolling)? to( the)* start( of the page)*$
+^(I scroll|we scroll|scrolling)? to( the)* end( of the page)*$
+^(I scroll|we scroll|scrolling)? to start of "([^"]*)"$
+^(I scroll|we scroll|scrolling)? to end of "([^"]*)"$
+^(I |we )*add "([^"]*)" selector for "([^"]*)" css selector$
+^(I |we )*add "([^"]*)" selector for "([^"]*)" xpath selector$
+^(I |we )*add selectors from "([^"]*)" file$
+^(I |we )*print css selectors$
+^(I |we )*print xpath selectors$
+^(I |we )*define css selectors:$
+^(I |we )*define xpath selectors:$
+^(I am |we are )?viewing the site on a (?:"([^"]+)"|([a-zA-Z0-9 _,]+)) (?:screen|device)$
+^(I |we )*see ([a-zA-Z0-9 ,\-]+) above ([a-zA-Z0-9 ,\-]+)$
+^(I |we )*see ([a-zA-Z0-9 ,\-]+) below ([a-zA-Z0-9 ,\-]+)$
+^(I |we )*see ([a-zA-Z0-9 ,\-]+) to (?:the )?left of ([a-zA-Z0-9 ,\-]+)$
+^(I |we )*see ([a-zA-Z0-9 ,\-]+) to (?:the )?right of ([a-zA-Z0-9 ,\-]+)$
+^(I |we )*see ([a-zA-Z0-9 ,\-]+) inside of ([a-zA-Z0-9 ,\-]+)$
+^(I |we )*see ([a-zA-Z0-9 ,\-]+) outside of ([a-zA-Z0-9 ,\-]+)$
+^(I |we )*see ((?:[a-zA-Z0-9 ,\-](?!not))+) over ([a-zA-Z0-9 ,\-]+)$
+^(I |we )*see ([a-zA-Z0-9 ,\-]+) not over ([a-zA-Z0-9 ,\-]+)$
+^(I |we )*see visible ([a-zA-Z0-9 ,\-]+)$
+^(I |we )*(don't|do not) see ([a-zA-Z0-9 ,\-]+)$
+^(I |we )*see ([a-zA-Z0-9 ,\-]+) has focus$
+^(I |we )*move focus to "([^"]*)" field$
+^(I |we )*select all text in "([^"]*)" field$
+^(I |we )*select from (\d+) to (\d+) text in "([^"]*)" field$
+^(I |we )*select "([^"]*)" text in "([^"]*)" field$
+^(I |we )*click (?:on |a )?([a-zA-Z0-9 ,\-]+)$
+^(?:the cookie|cookie) "((?:[^"\\]|\\.)*)" is set to "((?:[^"\\]|\\.)*)"$
+^the cookie "((?:[^"\\]|\\.)*)" is removed$
+^all cookies are cleared$
+^(?:the )?local storage "((?:[^"\\]|\\.)*)" is set to "((?:[^"\\]|\\.)*)"$
+^(?:the )?local storage "((?:[^"\\]|\\.)*)" is removed$
+^local storage is cleared$
+^(?:the )?session storage "((?:[^"\\]|\\.)*)" is set to "((?:[^"\\]|\\.)*)"$
+^(?:the )?session storage "((?:[^"\\]|\\.)*)" is removed$
+^session storage is cleared$
+^the table (?:"[^"]*"|'[^']*') should have -?\d+ row(?:s)?$
+^the table (?:"[^"]*"|'[^']*') should have -?\d+ column(?:s)?$
+^the table (?:"[^"]*"|'[^']*') should contain the following columns:$
+^the table (?:"[^"]*"|'[^']*') should be empty$
+^the table (?:"[^"]*"|'[^']*') should not be empty$
+^the table (?:"[^"]*"|'[^']*') should be sorted by (?:"[^"]*"|'[^']*') in (?:"[^"]*"|'[^']*') order$
+^the table (?:"[^"]*"|'[^']*') should contain the following rows:$
+^the (?:"[^"]*"|'[^']*') row should contain the following:$
+^(I |we )*start video recording$
+^(I |we )*stop video recording$
+^(I |we )*save the current video as "([^"]*)"$
+^print video path$
+^(I |we )*wait for (\d+) seconds?$
+^(I |we )*wait for (\d+) seconds? for AJAX to finish$
+^(I |we )*wait (\d+)( second| seconds|s)?$
+^(I |we )*wait max of (\d+)( second| seconds|s)?$
+^(I |we )*wait (\d+)( minute| minutes|m)$
+^(I |we )*wait max of (\d+)( minute| minutes|m)$
+^(I |we )*wait until( the)* page( is)* loaded*$
+^(I |we )*wait for (?:AJAX|ajax|Ajax) to finish$
+^(I |we )*wait for( the)* modal( dialog)* to (appear|disappear)$
+^(I |we )*wait for "([^"]*)" to appear$
+^(I |we )*wait for "([^"]*)" to disappear$
+^(I |we )*wait for( the)* text "([^"]*)" to appear$
+^(I |we )*wait for( the)* text "([^"]*)" to disappear$
+^(I |we )*wait until( the)* URL contains "([^"]*)"$
+^(I |we )*wait until( the)* page title (is|contains) "([^"]*)"$
+^(I |we )*wait until (\d+) elements? match(?:es)? "([^"]*)"$
+^(I |we )*wait until at least (\d+) elements? match(?:es)? "([^"]*)"$
+^(I |we )*wait until (the network is idle|requests are complete|network goes quiet)$
+^(I |we )*wait until( the)* page is interactive$
+^(I |we )*wait until pending timers settle$
+^eventually (I |we )*should see "([^"]*)"(?: within (\d+) seconds?)?$
+^"([^"]*)" should be (visible|hidden|attached|focused|enabled|disabled|editable)(?: within (\d+) seconds?)?$
+^"([^"]*)" should not be (visible|hidden|attached|focused|enabled|disabled|editable)(?: within (\d+) seconds?)?$
+^"([^"]*)" should be in the viewport(?: within (\d+) seconds?)?$
+^"([^"]*)" should not be in the viewport(?: within (\d+) seconds?)?$
+^"([^"]*)" should have a count of (\d+)(?: within (\d+) seconds?)?$
+^"([^"]*)" should have text "([^"]*)"(?: within (\d+) seconds?)?$
+^"([^"]*)" should contain text "([^"]*)"(?: within (\d+) seconds?)?$
+^"([^"]*)" should have value "([^"]*)"(?: within (\d+) seconds?)?$
+^"([^"]*)" should have attribute "([^"]*)" with value "([^"]*)"(?: within (\d+) seconds?)?$
+^"([^"]*)" should have class "([^"]*)"(?: within (\d+) seconds?)?$
+^(I |we )*click the "([^"]*)" (button|link|tab|menuitem|checkbox|radio|option)$
+^the "([^"]*)" (button|link|tab|menuitem|checkbox|radio|option) should be visible(?: within (\d+) seconds?)?$
+^the response content from the file (?:"[^"]*"|'[^']*')$
+^the response content is the following:$
+^the response should be in XML format$
+^the response should not be in XML format$
+^the XML element (?:"[^"]*"|'[^']*') should exist$
+^the XML element (?:"[^"]*"|'[^']*') should not exist$
+^the XML element (?:"[^"]*"|'[^']*') should be equal to (?:"[^"]*"|'[^']*')$
+^the XML element (?:"[^"]*"|'[^']*') should not be equal to (?:"[^"]*"|'[^']*')$
+^the XML element (?:"[^"]*"|'[^']*') should contain (?:"[^"]*"|'[^']*')$
+^the XML element (?:"[^"]*"|'[^']*') should not contain (?:"[^"]*"|'[^']*')$
+^the XML attribute (?:"[^"]*"|'[^']*') on element (?:"[^"]*"|'[^']*') should exist$
+^the XML attribute (?:"[^"]*"|'[^']*') on element (?:"[^"]*"|'[^']*') should not exist$
+^the XML attribute (?:"[^"]*"|'[^']*') on element (?:"[^"]*"|'[^']*') should be equal to (?:"[^"]*"|'[^']*')$
+^the XML attribute (?:"[^"]*"|'[^']*') on element (?:"[^"]*"|'[^']*') should not be equal to (?:"[^"]*"|'[^']*')$
+^the XML attribute (?:"[^"]*"|'[^']*') on element (?:"[^"]*"|'[^']*') should contain (?:"[^"]*"|'[^']*')$
+^the XML attribute (?:"[^"]*"|'[^']*') on element (?:"[^"]*"|'[^']*') should not contain (?:"[^"]*"|'[^']*')$
+^the XML element (?:"[^"]*"|'[^']*') should have -?\d+ element(?:s)?$
+^the XML should use the namespace (?:"[^"]*"|'[^']*')$
+^the XML should not use the namespace (?:"[^"]*"|'[^']*')$
+^(I |we )*print last XML response$
+^the YAML response content from the file (?:"[^"]*"|'[^']*')$
+^the YAML response content is the following:$
+^the active YAML document is -?\d+$
+^the YAML response should have -?\d+ document(?:s)?$
+^the response should be in YAML format$
+^the response should not be in YAML format$
+^the YAML should have no duplicate keys$
+^the YAML element (?:"[^"]*"|'[^']*') should exist$
+^the YAML element (?:"[^"]*"|'[^']*') should not exist$
+^the YAML element (?:"[^"]*"|'[^']*') should be equal to (?:"[^"]*"|'[^']*')$
+^the YAML element (?:"[^"]*"|'[^']*') should not be equal to (?:"[^"]*"|'[^']*')$
+^the YAML element (?:"[^"]*"|'[^']*') should contain (?:"[^"]*"|'[^']*')$
+^the YAML element (?:"[^"]*"|'[^']*') should not contain (?:"[^"]*"|'[^']*')$
+^the YAML attribute (?:"[^"]*"|'[^']*') on element (?:"[^"]*"|'[^']*') should exist$
+^the YAML attribute (?:"[^"]*"|'[^']*') on element (?:"[^"]*"|'[^']*') should not exist$
+^the YAML attribute (?:"[^"]*"|'[^']*') on element (?:"[^"]*"|'[^']*') should be equal to (?:"[^"]*"|'[^']*')$
+^the YAML attribute (?:"[^"]*"|'[^']*') on element (?:"[^"]*"|'[^']*') should not be equal to (?:"[^"]*"|'[^']*')$
+^the YAML attribute (?:"[^"]*"|'[^']*') on element (?:"[^"]*"|'[^']*') should contain (?:"[^"]*"|'[^']*')$
+^the YAML attribute (?:"[^"]*"|'[^']*') on element (?:"[^"]*"|'[^']*') should not contain (?:"[^"]*"|'[^']*')$
+^the YAML element (?:"[^"]*"|'[^']*') should have -?\d+ element(?:s)?$
+^the YAML value at (?:"[^"]*"|'[^']*') should be of type (?:"[^"]*"|'[^']*')$
+^the YAML value at (?:"[^"]*"|'[^']*') should be empty$
+^the YAML value at (?:"[^"]*"|'[^']*') should not be empty$
+^the YAML value at (?:"[^"]*"|'[^']*') should be greater than -?\d*\.?\d+$
+^the YAML value at (?:"[^"]*"|'[^']*') should be greater than or equal to -?\d*\.?\d+$
+^the YAML value at (?:"[^"]*"|'[^']*') should be less than -?\d*\.?\d+$
+^the YAML value at (?:"[^"]*"|'[^']*') should be less than or equal to -?\d*\.?\d+$
+^the YAML value at (?:"[^"]*"|'[^']*') should be between -?\d*\.?\d+ and -?\d*\.?\d+$
+^the YAML array at (?:"[^"]*"|'[^']*') should contain an item where (?:"[^"]*"|'[^']*') is (?:"[^"]*"|'[^']*')$
+^the YAML array at (?:"[^"]*"|'[^']*') should contain no item where (?:"[^"]*"|'[^']*') is (?:"[^"]*"|'[^']*')$
+^every item in (?:"[^"]*"|'[^']*') should have key (?:"[^"]*"|'[^']*')$
+^the YAML keys at (?:"[^"]*"|'[^']*') should be exactly (?:"[^"]*"|'[^']*')$
+^the YAML at (?:"[^"]*"|'[^']*') should have keys (?:"[^"]*"|'[^']*')$
+^the YAML should match JSON Schema (?:"[^"]*"|'[^']*')$
+^the YAML should equal the file (?:"[^"]*"|'[^']*') ignoring keys (?:"[^"]*"|'[^']*')$
+^the YAML should use the namespace (?:"[^"]*"|'[^']*')$
+^the YAML should not use the namespace (?:"[^"]*"|'[^']*')$
+^(I |we )*print last YAML response$
+^(?:I|we) create the album "([^"]+)" with the photo taken on "([^"]+)"$
+^the album "([^"]+)" should hold (\d+) items?$
+^(?:I|we) share the album "([^"]+)" by a link$
+^(?:I|we) open the shared link signed out$
+^the shared page should show the photo taken on "([^"]+)"$
+^(?:I|we) search the library for the file name "([^"]+)"$
+^the search should (?:find the photo taken on "([^"]+)"|find nothing)$
+^(?:I|we) sign in to the library as "([^"]+)"$
+^(?:I|we) sign in to the library as "([^"]+)" with a wrong password$
+^(?:I am|we are) signed in to the library as "([^"]+)"$
+^(?:I|we) get past the library's first-run wizard$
+^(?:I am|we are) signed in to the library's API as "([^"]+)"$
+^the library's API uses a key of "([^"]+)"$
+^the library has a new account "([a-z0-9][a-z0-9-]*)"$
+^(?:I|we) upload "([^"]+)" to the library$
+^(?:I|we) upload "([^"]+)" to the library through the API$
+^the library should hold "([^"]+)"$
+^the library should not hold "([^"]+)"$
+^the timeline should show the photo taken on "([^"]+)"$
+^the timeline should not show the photo taken on "([^"]+)"$
+^(?:I|we) open the photo taken on "([^"]+)"$
+^the photo's details should say "([^"]+)"$
+^(?:I|we) (mark|unmark) the photo as a favorite$
+^the photo should (be|not be) a favorite$
+^(?:I|we) move the photo to the trash$
+^the library should say "([^"]+)"$
+^(?:I|we) press "([^"]+)" in the library's message$
+^(?:I|we) confirm "([^"]+)"$
+^the trash should (?:hold the photo taken on "([^"]+)"|be empty)$
