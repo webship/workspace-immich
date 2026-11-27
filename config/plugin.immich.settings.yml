@@ -1,0 +1,10 @@
+# The Immich plugin's settings: core/config/plugin.immich.settings.yml, made by `plugins.sh --install immich` from
+# this template and never overwritten. The builder reads them each time it makes a library.
+immich:
+  # Immich asks version.immich.cloud now and then for a newer release, and shows a notice when there is one. The
+  # libraries the builder makes keep it off: no call out of a test workspace, and no notice that changes the pages
+  # under a test. "on" keeps Immich's default. (In a library: Administration, Settings, Version Check.)
+  version_check: "off"
+  # The map draws its tiles from tiles.immich.cloud, only when someone opens it. "on" is Immich's default, kept;
+  # "off" turns the map off. (In a library: Administration, Settings, Map & GPS Settings.)
+  map: "on"

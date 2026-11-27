@@ -1,0 +1,73 @@
+# An Immich library of this project: its server, its Postgres with the vector extensions and valkey, each pinned by
+# digest in .env; machine learning off, with no machine-learning container. The server is served at the project's
+# address, runs as the project's user (so the photos it writes in ../library are the project's own files), and keeps
+# them in ../library, which the row's Backup archives with the project. DDEV's own db is omitted: it cannot carry the
+# vector extensions, so its export-db, import-db and snapshot do not reach this Postgres; the plugin's database hook
+# does (the row's Backup and Restore). The project's web container keeps the mail catcher (web:1025). Written by the
+# Immich builder of the workspace (the plugin's docker-compose.immich.yaml); build again rather than editing by hand.
+# The library's settings are in ../.webship-immich/, which only you can read.
+services:
+  web:
+    environment:
+      - HTTP_EXPOSE=8093:80,8025:8025
+      - HTTPS_EXPOSE=8457:80,8026:8025
+  immich-server:
+    image: "${IMMICH_SERVER_IMAGE}"
+    container_name: ddev-${DDEV_SITENAME}-immich-server
+    user: "${DDEV_UID}:${DDEV_GID}"
+    labels:
+      com.ddev.site-name: ${DDEV_SITENAME}
+      com.ddev.approot: ${DDEV_APPROOT}
+    restart: "no"
+    expose:
+      - "2283"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      valkey:
+        condition: service_healthy
+    env_file:
+      - ${DDEV_APPROOT}/.webship-immich/env
+    volumes:
+      - ${DDEV_APPROOT}/library:/data
+    environment:
+      VIRTUAL_HOST: ${DDEV_HOSTNAME}
+      HTTP_EXPOSE: "80:2283"
+      HTTPS_EXPOSE: "443:2283"
+  postgres:
+    image: "${IMMICH_POSTGRES_IMAGE}"
+    container_name: ddev-${DDEV_SITENAME}-postgres
+    labels:
+      com.ddev.site-name: ${DDEV_SITENAME}
+      com.ddev.approot: ${DDEV_APPROOT}
+    restart: "no"
+    expose:
+      - "5432"
+    env_file:
+      - ${DDEV_APPROOT}/.webship-immich/postgres.env
+    shm_size: 128mb
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d immich"]
+      interval: 3s
+      timeout: 5s
+      retries: 60
+      start_period: 5s
+    volumes:
+      - postgres:/var/lib/postgresql/data
+  valkey:
+    image: "${IMMICH_VALKEY_IMAGE}"
+    container_name: ddev-${DDEV_SITENAME}-valkey
+    labels:
+      com.ddev.site-name: ${DDEV_SITENAME}
+      com.ddev.approot: ${DDEV_APPROOT}
+    restart: "no"
+    expose:
+      - "6379"
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep -q PONG"]
+      interval: 3s
+      timeout: 5s
+      retries: 30
+# Named after the project, so removing the project removes it with it, and a new build starts empty.
+volumes:
+  postgres:
